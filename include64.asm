@@ -1,6 +1,6 @@
 
 ;
-;	Libreria include64.asm fatta da Bastianello Federico
+;	Libreria include64.asm fatta da Bastianello Federico 05 / 05 / 2024
 ;
 ;	Siete liberi di usare questo modulo assembly che contiene macro e funzioni
 ;	base per lo svolgimento di un comune programma assembly. Nel caso vogliate modificarlo
