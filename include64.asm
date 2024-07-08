@@ -10,21 +10,24 @@
 ;	aggiornero' questo modulo con la vostra implementazione, dandovi i crediti
 ;
 
-; valori di uscita processi / funzioni
+; valori di uscita processi
 %define EXIT_SUCCESS 0
 %define EXIT_FAILURE 1
+
 
 ; common file descriptor
 %define stdin 0
 %define stdout 1
 %define stderr 2
 
+
 ; proprieta' file
 %define O_WRONLY 0o010
 %define O_RDONLY 0o100
 %define O_TRUNC  0o001
 
-; xor general register of cpu
+
+; azzero i registri generali della cpu
 %macro GXOR 0
 	xor rax, rax
 	xor rbx, rbx
@@ -65,22 +68,22 @@ section .bss
 	buff 		resb 1
 
 section .rodata
-	NEWLINE		db 10, 0
-	msg_error_read 	db "errore durante la lettura del file", NEWLINE
-	msg_error_write db "errore durante la scrittura del file", NEWLINE
+	NL		db 10
+	msg_error_read 	db "errore durante la lettura del file", NL, 0
+	msg_error_write db "errore durante la scrittura del file", NL, 0
+
 section .text
 
 
+; prototype: int print(char *ptr);
 print:	; funzione che stampa in stdout
-        ;
+        ; accetta un solo parametro in ingresso di grandezza db
         push rbp
 	mov rbp, rsp
-	
 	mov rsi, [rbp + 16]
-	
 	.puts:	cmp byte[rsi], 0
 		je .finish_print
-	
+
 		mov rax, 1		
 		mov rdi, stdout
 		mov rdx, 1
@@ -95,12 +98,14 @@ print:	; funzione che stampa in stdout
 		ret
 
 
-
-print_int:	push rbp
+; int print_int(int n);
+print_int:	; funzione che stampa a schermo un numero intero,
+		; accetta come parametro un solo intero
+		push rbp
 		mov rbp, rsp
 
-		mov rax, [rbp + 16]		
-		
+		mov rax, [rbp + 16]
+
 		mov rcx, digitSpace	; vettore di 100 elementi	
 		mov rbx, 10		; base 10
 		mov [rcx], rbx
@@ -144,7 +149,9 @@ print_int:	push rbp
 			ret
 
 
-input:  push rbp
+; int input(char *ptr);
+input:  ; leggere dallo standard input un vettore
+	push rbp
 	mov rbp, rsp
 
 	mov rsi, [rbp + 16]	;vettore
@@ -167,8 +174,10 @@ input:  push rbp
 		ret
 
 
-
-fread_all:	
+; int fread_all(char *filename)
+fread_all:
+	;	Funzione che legge e stampa il contenuto del file passato come parametro	
+	;	Restituisce 1 se qualcosa è andato storto, 0 se è andato tutto bene.
 	push rbp
 	mov rbp, rsp
 
@@ -177,14 +186,13 @@ fread_all:
 	js .error
 
 	mov [fd_in], rax
-	
-	.loop:  
-		mov rsi, buff
+
+	.loop:  mov rsi, buff
 		mov rdi, [fd_in]	; sposto il fd in rdi
 		mov rax, 0
 		mov rdx, 1
 		syscall 
-	
+
 	cmp rax, 0
 	je .eof
 	
