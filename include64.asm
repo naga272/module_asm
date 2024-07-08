@@ -66,14 +66,16 @@ section .bss
 	fd_in 		resd 1
 	buff 		resb 1
 
-section .data
+section .rodata
 	NEWLINE		db 10, 0
-	msg_error_read 	db "errore durante la lettura del file", 10, 0
-	msg_error_write db "errore durante la scrittura del file", 10, 0
+	msg_error_read 	db "errore durante la lettura del file", NEWLINE
+	msg_error_write db "errore durante la scrittura del file", NEWLINE
 section .text
 
 
-print:	push rbp
+print:	; funzione che stampa in stdout
+        ;
+        push rbp
 	mov rbp, rsp
 	
 	mov rsi, [rbp + 16]
