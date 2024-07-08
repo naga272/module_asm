@@ -46,7 +46,6 @@
 %endmacro
 
 
-
 %macro FWRITE 2		; N.B.: prima di usare questa macro assicurarsi che rdi contenga il file descriptor
 	mov rax, 1	; write-syscall
 	mov rsi, %1	; char []
@@ -74,8 +73,7 @@ section .rodata
 
 section .text
 
-
-; prototype: int print(char *ptr);
+; int print(char *ptr);
 print:	; funzione che stampa in stdout
         ; accetta un solo parametro in ingresso di grandezza db
         push rbp
@@ -94,6 +92,22 @@ print:	; funzione che stampa in stdout
 
 	.finish_print:	
 		mov rax, EXIT_SUCCESS
+		leave
+		ret
+
+
+; size_t strlen(const char*);
+strlen:	push rbp
+	mov rbp, rsp
+
+	mov rsi, [rbp + 24]
+	.ciclo: cmp byte[rsi], 0
+		je .done
+
+		inc rdx
+		inc rsi
+		jmp .ciclo
+	.done:	mov rax, rdx
 		leave
 		ret
 
