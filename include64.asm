@@ -8,8 +8,6 @@
 ;		- nagato27272@gmail.com
 ;	mandandomi la vostra versione. Se vedo che ci sono delle migliorie all'interno del codice
 ;	aggiornero' questo modulo con la vostra implementazione, dandovi i crediti
-;	Questo perche' ho faticato e studiato molto per creare questa libreria, quindi,
-;	vi chiedo di usare il buonsenso. Grazie per la dispobilita'
 ;
 
 ; valori di uscita processi / funzioni
