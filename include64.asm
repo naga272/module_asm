@@ -68,8 +68,8 @@ section .bss
 
 section .rodata
 	NL		db 10
-	msg_error_read 	db "errore durante la lettura del file", NL, 0
-	msg_error_write db "errore durante la scrittura del file", NL, 0
+	msg_error_read 	db "errore durante la lettura del file", 0
+	msg_error_write db "errore durante la scrittura del file", 0
 
 section .text
 
@@ -91,6 +91,12 @@ print:	; funzione che stampa in stdout
 		jmp .puts
 
 	.finish_print:	
+	        ; vado a capo
+		mov rax, 1
+	        mov rsi, NL
+	        mov rdx, 1
+	        mov rdi, stdout
+	        syscall
 		mov rax, EXIT_SUCCESS
 		leave
 		ret
